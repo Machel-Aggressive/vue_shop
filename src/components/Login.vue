@@ -6,15 +6,15 @@
                 <img src="@/assets/logo.png" alt="">
             </div>
             <!-- 表单区域 -->
-            <el-form :model="form" :rules="rules" label-width="0px" class="login_form">
-                <el-form-item prop="username">
+            <el-form :model="form" ref="refForm" :rules="rules" label-width="80px" class="login_form">
+                <el-form-item label="用户名" prop="username">
                     <el-input
                         placeholder="请输入用户名"
                         prefix-icon="el-icon-user"
                         v-model="form.username">
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
+                <el-form-item label="密码" prop="password">
                     <el-input
                         placeholder="请输入密码"
                         prefix-icon="el-icon-lock"
@@ -23,8 +23,8 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item class="btns">
-                    <el-button type="primary">登录</el-button>
-                    <el-button type="info">重置</el-button>
+                    <el-button type="primary" @click="login">登录</el-button>
+                    <el-button type="info" @click="reset">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -36,19 +36,38 @@ export default {
     data() {
       return {
         form: {
-            username: '1',
-            password: '2'
+            username: 'admin',
+            password: '123456'
         },
         rules: {
             username: [
                 {required: true, message: '请输入用户名', trigger: 'blur'},
-                {min: 3, max: 10, message: '长度在3到10之间', trigger: 'blur'}
+                {min: 3, max: 10, message: '用户名长度在3到10之间', trigger: 'blur'}
             ],
             password: [
-                {required: true, message: '请输入密码', trigger: 'blur'}
+                {required: true, message: '请输入密码', trigger: 'blur'},
+                {min: 6, max: 10, message: '密码长度在6到10之间', trigger: 'blur'}
             ]
         }
       }
+    },
+    methods: {
+        reset() {
+            this.$refs.refForm.resetFields();
+        },
+        login() {
+            this.$refs.refForm.validate(async valid => {
+                if (!valid) return;
+                const {data: result} = await this.$http.post('login', this.form);
+                if (result.meta.status != 200) {
+                    this.$message.error('登录失败');
+                    return;
+                }
+                this.$message.success('登陆成功');
+                window.sessionStorage.setItem('token', result.data.token);
+                this.$router.push('/home');
+            });
+        }
     }
 }
 </script>
