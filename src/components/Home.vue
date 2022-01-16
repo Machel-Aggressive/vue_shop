@@ -95,5 +95,41 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.home-container {
+  height: 100%;
+}
+.el-header {
+  background-color: #373d41;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  color: #eaedf1;
+  font-size: 20px;
+  align-items: center;
+  > div {
+    display: flex;
+    align-items: center;
+    > span {
+      margin-left: 15px;
+    }
+  }
+}
+.el-aside {
+  background-color: #333744;
+  .el-menu {
+      border-right: none;
+  }
+  .toggle-button {
+      background-color: #4A5064;
+      color: #eaedf1;
+      font-size: 10px;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer;
+      letter-spacing: 0.2em;
+  }
+}
+.el-main {
+  background-color: #eaedf1;
+}
 </style>
