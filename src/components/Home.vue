@@ -18,6 +18,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           :router="true"
+          :default-active="activePath"
         >
           <el-submenu
             :index="'/' + item.path"
@@ -32,6 +33,7 @@
               :index="'/' + subItem.path"
               v-for="subItem in item.children"
               :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)"
             >
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -60,7 +62,8 @@ export default {
         102: "el-icon-s-shop",
         145: "el-icon-s-data",
       },
-      isCollapse: false
+      isCollapse: false,
+      activePath: ''
     };
   },
   methods: {
@@ -77,10 +80,15 @@ export default {
     },
     toggleCollapse() {
         this.isCollapse = !this.isCollapse
+    },
+    saveNavState(activePath) {
+        window.sessionStorage.setItem('activePath', activePath)
+        this.activePath = activePath
     }
   },
   created() {
     this.getMenuList();
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
 };
 </script>
